@@ -112,10 +112,8 @@
             echo '<h4>欢迎'.$username.'用户的使用</h4>';
             echo '<script>alert("登陆成功");</script>';
             break;
-        }else{
-            echo '<script>alert("账号或密码错误或未注册");</script>';
         }
-    }        
+    }
     }
 
 
@@ -126,7 +124,7 @@
     <?
         error_reporting(E_ERROR);
         ini_set("display_errors","off");
-        $url = '';
+        $url = 'http://43.248.187.3:48139/api/everyday';
     
         // 初始化cURL
         $curl = curl_init($url);
@@ -185,7 +183,7 @@
         }
 	?>
 
-	<button type="button" onclick="hideContent()">重新练习</button><br>
+	<button type="button" onclick="hideContent()">重新练习/隐藏单词</button><br>
     <script>
     
     function hideContent() {
