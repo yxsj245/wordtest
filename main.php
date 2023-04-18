@@ -126,7 +126,7 @@
     <?
         error_reporting(E_ERROR);
         ini_set("display_errors","off");
-        $url = 'http://43.248.187.3:48139/api/everyday';
+        $url = '';
     
         // 初始化cURL
         $curl = curl_init($url);
