@@ -80,9 +80,10 @@
     </style>
 </head>
 <body>
+    <form action=""></form>
     <div style="width: 100%; overflow: hidden;">
     <marquee behavior="scroll" direction="left">
-        <p class="words">公告1.本程序目前处于测试期间，部分功能尚未完善，期待大家的建议;</p>
+        <p class="words">公告1.本程序目前处于测试期间，部分功能尚未完善，期待大家的建议;2.目前已支持随机单词，刷新页面即可重新进行随机单词。</p>
     </marquee>
     </div>
     <div id="reg">
@@ -115,15 +116,10 @@
         }
     }
     }
-
-
-    // 如果循环完毕还未匹配成功，则登录失败
     
 ?>
 
     <?
-        error_reporting(E_ERROR);
-        ini_set("display_errors","off");
         $url = 'http://43.248.187.3:48139/api/everyday';
     
         // 初始化cURL
@@ -149,51 +145,30 @@
             $wordList = $data;
             $data_array = $wordList["data"];//单词数组$data_array 
         }
-        // print_r($wordList);
-        // echo count($data_array);
         $arraylength = count($data_array);
-        // 将关联数组转换为索引数组
-        $my_values_array = array_values($data_array);
-        // echo $my_values_array[1];
-        //分割
+        $new_data_array = array();
+
+        // 随机取值并存入 $new_data_array 数组
         for ($i = 0; $i < $arraylength; $i++) {
-            $arr = explode('：', $my_values_array[$i]);
+            $index = array_rand($data_array); // 随机取出一个索引值
+            $new_data_array[] = $data_array[$index]; // 将对应的元素存入新数组
+            unset($data_array[$index]); // 将已经取出的元素从原数组中删除
+        }
+        session_start();
+        $_SESSION['word'] = $new_data_array;
+        $_SESSION['numb'] = $arraylength;
+        for ($i = 0; $i < $arraylength; $i++) {
+            $arr = explode('：', $new_data_array[$i]);
             $second_element = $arr[1];
             $Chinese = $second_element;
             
-            echo '<form method="post" id="myForm">';
+            echo '<form method="post" id="myForm" action="maindemo.php">';
             echo $Chinese;
             echo '<label for="input' . $i . '"></label>';
             echo '<input type="text" id="input' . $i . '" name="input' . $i . '"><br>';
         }
         echo '<input type="submit" value="提交">';
         echo '<div id="myDiv">';
-        
-        for ($i = 0; $i < $arraylength; $i++) {
-            $arr = explode('：', $my_values_array[$i]);
-            $second_element = $arr[0];
-            $English = $second_element;
-            // echo $_POST['input'.$i];
-            if($English == $_POST['input'.$i]){
-                echo '正确<br>';
-            }else{
-                
-                echo '错误'.$English.'<br>';
-            }
-        }
 	?>
-
-	<button type="button" onclick="hideContent()">重新练习/隐藏单词</button><br>
-    <script>
-    
-    function hideContent() {
-      // 获取需要隐藏的元素
-      var element = document.getElementById("myDiv");
-      
-      // 修改元素的样式，使其隐藏
-      element.style.display = "none";
-    }
-    </script>
-
 </body>
 </html>
