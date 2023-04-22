@@ -109,16 +109,13 @@
 </head>
 <body>
 
-  
+<!-- ----公告系统---- -->
 <?php
 // 关闭警告和提示错误的显示 开发时请注释
 error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE);
 ini_set('display_errors', 0);
-
-// 您的代码
 ?>
 
-<!-- 设置公告显示 -->
 <?php
 // 检查是否存在名为“my_cookie”的cookie
 if (!isset($_COOKIE['my_cookie'])) {
@@ -133,7 +130,6 @@ if (!isset($_COOKIE['my_cookie'])) {
 // 如果cookie存在，检查cookie值是否匹配所需的值
  $cookie_value = $_COOKIE['my_cookie'];
 if ($cookie_value !== '1.0.0') {
-// cookie值不匹配，重新设置cookie
 setcookie('my_cookie', '1.0.0', strtotime('2038-01-01'));
 echo'<script>alert("4月21号站点更新日志：1.调整错误单词列表样式，使其更加醒；2.正式启用数据库，单词错误将存入数据库;3.支持上次错误单词显示")</script>';
 }
@@ -142,6 +138,7 @@ echo'<script>alert("4月21号站点更新日志：1.调整错误单词列表样�
     <button class="close">关闭</button>
   </div>
 </div>
+<!-- ----公告系统结束---- -->
 
     <marquee width = "100%" behavior = "scrol1" bgcolor = "pink">
         火狐浏览器用户请注意：由于火狐自带表单记录功能，如果需要关闭可以<a href="https://xz-kun-xiang.com:48143/threads/%E6%B5%8B%E5%8D%95%E8%AF%8D%E7%BD%91%E9%A1%B5%E7%AB%AF%E5%85%B3%E9%97%AD%E7%81%AB%E7%8B%90%E8%87%AA%E5%B8%A6%E8%A1%A8%E5%8D%95%E8%AE%B0%E5%BD%95%E5%8A%9F%E8%83%BD.117/">点击这里</a>查看关闭教程
@@ -156,7 +153,9 @@ echo'<script>alert("4月21号站点更新日志：1.调整错误单词列表样�
     </form>
     </div>
     <h1>单词测试程序网页版bata</h1>
+    <!-- ----登陆系统---- -->
     <? 
+        // 连接数据库
         $servername = "localhost";
         $username = "csmyswe";
         $password = "DmrxyfaExptNcAMn";
@@ -166,7 +165,7 @@ echo'<script>alert("4月21号站点更新日志：1.调整错误单词列表样�
         
         //检查连接是否成功
         if (!$conn) {
-            echo'<script>alert("数据库通信错误，请联系负责人")</script>';
+            echo'<script>alert("数据库通信错误，暂时无法登陆，请联系负责人")</script>';
             die("连接失败: " . mysqli_connect_error());
         }
         if (isset($_POST['username'])) {
@@ -192,10 +191,13 @@ echo'<script>alert("4月21号站点更新日志：1.调整错误单词列表样�
             echo'<script>alert("用户不存在")</script>';
             }
         }
+    // 关闭数据库连接
     mysqli_close($conn);
     ?>
-    
+    <!-- ----登陆系统结束---- -->
+    <!-- ----单词系统---- -->
     <?
+        // 请求每日单词接口
         $url = 'http://43.248.187.3:48139/api/everyday';
     
         // 初始化cURL
@@ -213,13 +215,13 @@ echo'<script>alert("4月21号站点更新日志：1.调整错误单词列表样�
         // 将响应转换为PHP数组
         $data = json_decode($response, true);
         
-        // 输出响应结果
+        // 判断是否转换成功
         if (is_null($data)) {
             echo 'Failed to decode JSON response';
         } else {
             // print_r($data);
             $wordList = $data;
-            $data_array = $wordList["data"];//单词数组$data_array 
+            $data_array = $wordList["data"];//将单词存入数组
         }
         $arraylength = count($data_array);
         $new_data_array = array();
@@ -237,7 +239,7 @@ echo'<script>alert("4月21号站点更新日志：1.调整错误单词列表样�
             $arr = explode('：', $new_data_array[$i]);
             $second_element = $arr[1];
             $Chinese = $second_element;
-            
+            // 生成表单
             echo '<form method="post" id="myForm" action="maindemo.php">';
             echo $Chinese;
             echo '<label for="input' . $i . '"></label>';
@@ -246,6 +248,8 @@ echo'<script>alert("4月21号站点更新日志：1.调整错误单词列表样�
         echo '<input type="submit" name="submit"value="提交">';
         echo '<div id="myDiv">';
 	?>
+    <!-- ----单词系统结束---- -->
+    <!-- 弹窗JS效果 -->
 	    <script>
       // 获取弹窗和关闭按钮元素
       var modal = document.querySelector('.modal');
