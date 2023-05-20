@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>单词测试前端</title>
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <script src="./js/bootstrap.bundle.min.js"></script>
         <style>
         /* 修改标题的样式 */
         h1 {
@@ -129,9 +131,9 @@ if (!isset($_COOKIE['my_cookie'])) {
 
 // 如果cookie存在，检查cookie值是否匹配所需的值
  $cookie_value = $_COOKIE['my_cookie'];
-if ($cookie_value !== '1.0.0') {
-setcookie('my_cookie', '1.0.0', strtotime('2038-01-01'));
-echo'<script>alert("4月21号站点更新日志：1.调整错误单词列表样式，使其更加醒；2.正式启用数据库，单词错误将存入数据库;3.支持上次错误单词显示")</script>';
+if ($cookie_value !== '1.0.3') {
+setcookie('my_cookie', '1.0.3', strtotime('2038-01-01'));
+echo'<script>alert("5月20号站点更新日志：大小写不再影响检测结果")</script>';
 }
 
 ?>
@@ -140,16 +142,15 @@ echo'<script>alert("4月21号站点更新日志：1.调整错误单词列表样�
 </div>
 <!-- ----公告系统结束---- -->
 
-    <marquee width = "100%" behavior = "scrol1" bgcolor = "pink">
-        火狐浏览器用户请注意：由于火狐自带表单记录功能，如果需要关闭可以<a href="https://xz-kun-xiang.com:48143/threads/%E6%B5%8B%E5%8D%95%E8%AF%8D%E7%BD%91%E9%A1%B5%E7%AB%AF%E5%85%B3%E9%97%AD%E7%81%AB%E7%8B%90%E8%87%AA%E5%B8%A6%E8%A1%A8%E5%8D%95%E8%AE%B0%E5%BD%95%E5%8A%9F%E8%83%BD.117/">点击这里</a>查看关闭教程
-    </marquee>
+<div class="alert alert-info" style="text-align:center;">
+    <strong>火狐浏览器用户请注意</strong> ：较老版本的火狐不具备识别功能可能会记录本页面表单内容，如果需要关闭可以<a class="alert-link" href="https://xz-kun-xiang.com:48143/threads/%E6%B5%8B%E5%8D%95%E8%AF%8D%E7%BD%91%E9%A1%B5%E7%AB%AF%E5%85%B3%E9%97%AD%E7%81%AB%E7%8B%90%E8%87%AA%E5%B8%A6%E8%A1%A8%E5%8D%95%E8%AE%B0%E5%BD%95%E5%8A%9F%E8%83%BD.117/">点击这里</a>查看关闭教程。
+  </div>
 
-    <form action=""></form>
     <div id="reg">
         <form method="post">
             请输入账号: <input type="text" name="username">
             请输入密码: <input type="password" name="password">
-            <input type="submit" value="登陆">
+            <input type="submit" value="登陆" class="btn btn-primary">
     </form>
     </div>
     <h1>单词测试程序网页版bata</h1>
@@ -180,8 +181,9 @@ echo'<script>alert("4月21号站点更新日志：1.调整错误单词列表样�
                 if($username_sql == $username && $password_sql==$password){
                     session_start();
                     $_SESSION['username_sql'] = $username_sql;
-                    echo '<h3 style="text-align:center;">欢迎'.$username.'使用</h3>';
-                    echo '<h4 style="text-align:center;">'.$text.'</h4>';
+                    echo '<div class="alert alert-success" style="text-align:center;">';
+                    echo '<strong >欢迎用户：'.$username.'使用</strong><br>'.$text.'';
+                    echo '</div>';
                     session_start();
                     $_SESSION['username'] = $username;
                 }else{
@@ -245,7 +247,7 @@ echo'<script>alert("4月21号站点更新日志：1.调整错误单词列表样�
             echo '<label for="input' . $i . '"></label>';
             echo '<input type="text" id="input' . $i . '" name="input' . $i . '"><br>';
         }
-        echo '<input type="submit" name="submit"value="提交">';
+        echo '<input type="submit" name="submit"value="提交" class="btn btn-primary">';
         echo '<div id="myDiv">';
 	?>
     <!-- ----单词系统结束---- -->
