@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+        <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <script src="./js/bootstrap.bundle.min.js"></script>
 <style>
     table {
         border-collapse: collapse;
@@ -25,6 +27,17 @@
     tr:nth-child(even) {
         background-color: #f2f2f2;
     }
+    .word:hover {
+        cursor: pointer;
+    }
+    .word {
+        color: black;
+        transition: color 0.3s ease;
+    }
+
+    .word:hover {
+        color: blue;
+    }
 </style>
 </head>
 <body>
@@ -32,8 +45,13 @@
         <tr>
             <th>输入的单词</th>
             <th>正确单词</th>
+            <th>正确汉语</th>
             <th>是否正确</th>
         </tr>
+<!--关闭警告-->
+<?php
+error_reporting(0);
+?>
 <!-- 收集错误单词 -->
 <?
     $servername = "localhost";
@@ -57,27 +75,30 @@
     }
     
     session_start();
-    $my_values_array = $_SESSION['word'];//全部单词数组
+    $my_values_array = $_SESSION['word'];
     $arraylength = $_SESSION['numb'];//单词长度// 定义一个空数组，用于存储错误单词及其对应的汉语
-    echo '<h3>本次自测错误单词</h3>';
+    #echo '<h3>本次自测错误单词</h3>';
     if (isset($_POST['submit'])) {
         for ($i = 0; $i < $arraylength; $i++) {
             $arr = explode('：', $my_values_array[$i]);
-            $second_element = $arr[0];
+            $second_element = strtolower($arr[0]);
             $second_element_chines = $arr[1];
             $English = $second_element;
-            // echo $_POST['input'.$i];
+            $chinese = $second_element_chines;
+            // echo $second_element;
             
-            if($English == $_POST['input'.$i]){
+            if($English == strtolower($_POST['input'.$i])){
                 echo '<tr>';
                 echo '<td>'.$second_element.'</td>';
-                echo '<td>'.$English.'</td>';
+                echo '<td><p class="word">'.$English.'</p></td>';
+                echo '<td>'.$chinese.'</td>';
                 echo '<td style="color:green">正确</td>';
                 echo '</tr>';
             }else{
                 echo '<tr>';
                 echo '<td>'.$_POST['input'.$i].'</td>';
-                echo '<td>'.$English.'</td>';
+                echo '<td><p class="word">'.$English.'<p></td>';
+                echo '<td>'.$chinese.'</td>';
                 echo '<td style="color:red">错误</td>';
                 echo '</tr>';
                 $errorwords_array[] = array($English => $second_element_chines);
@@ -120,7 +141,7 @@
             foreach ($item as $key => $value) {
                 $decoded_value = mb_convert_encoding(pack("H*", str_replace("u", "", $value)), "UTF-8", "UCS-2BE");
                 echo '<tr>';
-                echo '<td>' . $key . '</td>';
+                echo '<td><p class="word">' . $key . '</p></td>';
                 echo '<td>' . $decoded_value . '</td>';
                 echo '</tr>';
             }
@@ -152,17 +173,29 @@
             }   
 
         }else{
-            echo'<script>alert("检测到您未登陆，建议您登陆后可享受保存错误单词并显示上次错误单词的功能")</script>';
-            echo '<h4>若您未注册，<a href="https://xz-kun-xiang.com:48126/PHP/PHP%E5%86%85%E5%AE%B9%E5%B1%95%E7%A4%BA/%E6%B5%8B%E5%8D%95%E8%AF%8D/register.php">点击这里</a>进行注册</h4>';
+            echo '<div class="alert alert-primary" role="alert">检测到您未登陆，建议您登陆后可享受保存错误单词并显示上次错误单词的功能</div>';
+            echo '<div class="alert alert-primary" role="alert">若您未注册，<a href="https://xz-kun-xiang.com:48126/PHP/PHP%E5%86%85%E5%AE%B9%E5%B1%95%E7%A4%BA/%E6%B5%8B%E5%8D%95%E8%AF%8D/register.php">点击这里</a>进行注册</div>';
         }
 
     }
 
 ?>
     </table>
-    <a href="./main.php">重新测试</a>  
+    <a class="btn btn-outline-primary" href="./main.php">重新测试</a>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.word').click(function() {
+                var word = $(this).text();
+                var audioUrl = 'http://dict.youdao.com/dictvoice?type=0&audio=' + encodeURIComponent(word);
 
+                // 创建 Audio 对象并播放音频
+                var audio = new Audio(audioUrl);
+                audio.play();
+            });
+        });
+    </script>
   
 </body>
 </html>
